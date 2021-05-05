@@ -12,10 +12,13 @@
   "author": "Ture Thörnvik",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.17.1"
+    "axios": "^0.21.1",
+    "express": "^4.17.1",
+    "suncalc": "^1.8.0"
   },
   "devDependencies": {
     "@types/express": "^4.17.11",
+    "@types/suncalc": "^1.8.0",
     "@typescript-eslint/eslint-plugin": "^4.22.1",
     "@typescript-eslint/parser": "^4.22.1",
     "env-cmd": "^10.1.0",
