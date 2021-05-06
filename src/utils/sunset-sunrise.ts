@@ -3,39 +3,17 @@ import suncalc from 'suncalc'
 type dayState = 'sunrise' | 'sunset' | 'night' | 'day'
 
 // functions for checking state of day
-const isSunrise = (currentHour: number, sunriseStart: number, sunriseEnd: number) => {
-  if (currentHour >= sunriseStart && currentHour <= sunriseEnd) {
-    return 'sunrise' as dayState
-  }
-  return 'day'
-}
+const isSunrise = (currentHour: number, sunriseStart: number, sunriseEnd: number) => (currentHour >= sunriseStart && currentHour <= sunriseEnd)
 
-const isSunset = (currentHour: number, sunsetStart: number, sunsetEnd: number) => {
-  if (currentHour >= sunsetStart && currentHour <= sunsetEnd) {
-    return 'sunset' as dayState
-  }
-  return 'day'
-}
+const isSunset = (currentHour: number, sunsetStart: number, sunsetEnd: number) => (currentHour >= sunsetStart && currentHour <= sunsetEnd)
 
-const isNight = (currentHour: number, sunset: number) => {
-  if (currentHour > sunset) {
-    return 'night' as dayState
-  }
-  return 'day'
-}
+const isNight = (currentHour: number, sunset: number, sunrise: number) => (currentHour > sunset || currentHour < sunrise)
 
-const isDay = (currentHour: number, sunrise: number) => {
-  if (currentHour > sunrise) {
-    return 'day' as dayState
-  }
-  return 
-}
-
-export const getSunsetSunriseTime = async (lat: number = 59.4796, long: number = 17.8964) => {
+export const getSunsetSunriseTime = (lat: number = 59.4796, long: number = 17.8964) => {
   const current = new Date()
-  const locationTime = suncalc.getTimes(current, lat, long) // getting the time for current location
+  const locationTime = suncalc.getTimes(current, lat, long) // getting the time for location based on lat and long
 
-  // current time in hour and min
+  // current time, hour and min
   const currentHour = current.getHours()
   const currentMinute = current.getMinutes()
 
@@ -51,7 +29,11 @@ export const getSunsetSunriseTime = async (lat: number = 59.4796, long: number =
   const dusk = locationTime.dusk.getHours()
   const goldenHour = locationTime.goldenHour.getHours()
 
-  let currentDayState: dayState = 'day'
+  const currentDayState: dayState =
+    isSunrise(currentHour, dawn, goldenHourEnd) ?
+      'sunrise' : (isSunset(currentHour, dusk, goldenHour) ?
+        'sunset' : (isNight(currentHour, goldenHour, dawn) ?
+          'night' : 'day'))
 
   return {
     sunrise,
