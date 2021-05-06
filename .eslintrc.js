@@ -5,6 +5,7 @@ module.exports = {
   },
   extends: [
     'airbnb-base',
+    'eslint:recommended',
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
@@ -14,6 +15,14 @@ module.exports = {
   plugins: [
     '@typescript-eslint',
   ],
+  settings: {
+    'import/resolver': {
+      node: {
+        extensions: ['.js', '.jsx', '.ts', '.tsx'],
+        moduleDirectory: ['node_modules', 'src/'],
+      }
+    }
+  },
   rules: {
     'arrow-parens': 'off',
     'comma-dangle': 'off',
@@ -28,7 +37,27 @@ module.exports = {
     'operator-linebreak': 'off',
     'prefer-template': 'off',
     'no-unused-vars': 'off',
-    semi: 'off',
+    'no-nested-ternary': 'off',
+    semi: ['error', 'never'],
+
+    'import/prefer-default-export': 'off',
+
     '@typescript-eslint/semi': ['error', 'never'],
+    '@typescript-eslint/comma-dangle': 'off',
+    '@typescript-eslint/indent': 'off',
+    '@typescript-eslint/lines-between-class-members': 'off',
+    '@typescript-eslint/no-tabs': 'off',
+    '@typescript-eslint/no-use-before-define': ['error'],
+
+    'import/extensions': [
+      'error',
+      'ignorePackages',
+      {
+        js: 'never',
+        jsx: 'never',
+        ts: 'never',
+        tsx: 'never'
+      }
+    ]
   },
 }

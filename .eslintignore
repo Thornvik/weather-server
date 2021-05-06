@@ -2,3 +2,5 @@
 node_modules
 # Don't lint the build folder
 build
+# Don't lint the eslint config file
+.eslintrc.js
