@@ -1,9 +1,11 @@
 import express, { Request, Response } from 'express'
+import cors from 'cors'
 import { getSunsetSunriseTime } from './utils/sunset-sunrise'
 import { geolocation } from './utils/geolocation'
 import { forcast } from './utils/forecast'
 
 const app = express()
+app.use(cors())
 const port = process.env.PORT
 
 app.get('/weather', (req: Request, res: Response) => {
