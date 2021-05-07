@@ -1,14 +1,7 @@
 import axios from 'axios'
+import { CallbackVar } from '../types'
 
-type error = string | undefined
-interface latLong {
-  lat: number
-  long: number
-  location: string
-}
-type Callback = (e: error, res: latLong | undefined) => void
-
-export const geolocation = (adress: string, cb: Callback) => {
+export const geolocation = (adress: string, cb: CallbackVar) => {
   const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${
     adress
   }.json?access_token=${process.env.MAPBOX_KEY}&limit=1`

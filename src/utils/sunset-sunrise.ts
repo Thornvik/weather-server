@@ -9,7 +9,7 @@ const isSunset = (currentHour: number, sunsetStart: number, sunsetEnd: number) =
 
 const isNight = (currentHour: number, sunset: number, sunrise: number) => (currentHour > sunset || currentHour < sunrise)
 
-export const getSunsetSunriseTime = (lat: number = 59.4796, long: number = 17.8964) => {
+export const getSunsetSunriseTime = (lat: number, long: number) => {
   const current = new Date()
   const locationTime = suncalc.getTimes(current, lat, long) // getting the time for location based on lat and long
 
