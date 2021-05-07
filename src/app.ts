@@ -1,30 +1,35 @@
 import express, { Request, Response } from 'express'
 import { getSunsetSunriseTime } from './utils/sunset-sunrise'
 import { geolocation } from './utils/geolocation'
+import { forcast } from './utils/forecast'
 
 const app = express()
 const port = process.env.PORT
 
 app.get('/', async (req: Request, res: Response) => {
   geolocation('rotebro', async (e, locationData) => {
-    if (e !== undefined || locationData === undefined) {
-      return console.log('unable to find location, try another')
+    if (e !== undefined) {
+      return console.log(e)
     }
 
     const { lat, long, location } = locationData
-    const { sunset, sunrise, currentDayState } = await getSunsetSunriseTime(lat, long)
+    const { currentDayState } = await getSunsetSunriseTime(lat, long)
+    return forcast(lat, long, async (err, weatherData) => {
+      if (err !== undefined) {
+        return console.log('error')
+      }
 
-    const response = {
-      lat,
-      long,
-      location,
-      sunset,
-      sunrise,
-      currentDayState
-    }
+      const response = await {
+        lat,
+        long,
+        location,
+        currentDayState,
+        weatherData
+      }
 
-    console.log(response)
-    return res.send(response)
+      console.log(response)
+      return res.send(response)
+    })
   })
 })
 
