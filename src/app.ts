@@ -6,10 +6,16 @@ import { forcast } from './utils/forecast'
 const app = express()
 const port = process.env.PORT
 
-app.get('/', async (req: Request, res: Response) => {
-  geolocation('rotebro', async (e, locationData) => {
+app.get('/weather', (req: Request, res: Response) => {
+  const { adress } = req.query
+  console.log(adress)
+  if (!adress) {
+    return res.send('please provide a adress')
+  }
+
+  return geolocation(adress as string, async (e, locationData) => {
     if (e !== undefined) {
-      return console.log(e)
+      return res.send('Unable to find location')
     }
 
     const { lat, long, location } = locationData
@@ -19,7 +25,7 @@ app.get('/', async (req: Request, res: Response) => {
         return console.log('error')
       }
 
-      const response = await {
+      const weatherInfo = await {
         lat,
         long,
         location,
@@ -27,8 +33,8 @@ app.get('/', async (req: Request, res: Response) => {
         weatherData
       }
 
-      console.log(response)
-      return res.send(response)
+      console.log(weatherInfo)
+      return res.send(weatherInfo)
     })
   })
 })
