@@ -8,7 +8,6 @@ const port = process.env.PORT
 
 app.get('/weather', (req: Request, res: Response) => {
   const { adress } = req.query
-  console.log(adress)
   if (!adress) {
     return res.send('please provide a adress')
   }
