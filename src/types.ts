@@ -1,1 +1,1 @@
-export type CallbackVar = (...args: any[]) => void
+export type CallbackVar = (error: string | undefined, ...args: any[]) => void
