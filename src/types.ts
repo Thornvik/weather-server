@@ -20,7 +20,7 @@ export enum WeatherDescription {
   Snow = 'snow',
   Rain = 'rain',
   Drizzel = 'drizzel',
-  Thunderstrom = 'thunderstorm'
+  Thunderstorm = 'thunderstorm'
 }
 
 export interface WeatherData {
