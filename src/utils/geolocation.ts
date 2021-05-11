@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { CallbackVar } from '../types'
+import { CallbackVar, Location } from '../types'
 
 export const geolocation = (adress: string, cb: CallbackVar) => {
   const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${
@@ -14,9 +14,9 @@ export const geolocation = (adress: string, cb: CallbackVar) => {
         return cb('unable to find location, try another', undefined)
       }
 
-      const lat = res.data.features[0].center[1]
-      const long = res.data.features[0].center[0]
-      const location = res.data.features[0].text
+      const lat: number = res.data.features[0].center[1]
+      const long: number = res.data.features[0].center[0]
+      const location: Location = res.data.features[0].text
 
       return cb(undefined, { lat, long, location })
     } catch (err) {
