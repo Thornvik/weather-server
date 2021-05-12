@@ -23,7 +23,7 @@ app.get('/weather', (req: Request, res: Response) => {
     const { currentDayState } = await getSunsetSunriseTime(lat, long)
     return forcast(lat, long, async (err, weatherData) => {
       if (err !== undefined) {
-        return res.send(err)
+        return res.send('Unable to get weather forcast, check location')
       }
 
       const { temp, sunrise, sunset, description } = weatherData
