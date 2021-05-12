@@ -19,12 +19,14 @@ export const forcast = (lat: number, long: number, cb: CallbackVar) => {
         return cb('could not get weather, check location', undefined)
       }
 
-      const { temp, sunrise, sunset } = await res.data.current
+      const { temp, sunrise, sunset, humidity, wind_speed } = await res.data.current // eslint-disable-line
       const { main } = await res.data.current.weather[0]
       const weatherData = {
         temp: temp.toString(),
         sunrise,
         sunset,
+        humidity,
+        windSpeed: wind_speed,
         description: main as WeatherDescription
       } as WeatherData
 

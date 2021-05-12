@@ -26,14 +26,16 @@ app.get('/weather', (req: Request, res: Response) => {
         return res.send(err)
       }
 
-      const weatherInfo = await {
+      const { temp, sunrise, sunset, description } = weatherData
+
+      const weatherForcast = await {
         location,
         currentDayState,
         weatherData
       }
 
-      console.log(weatherInfo)
-      return res.send(weatherInfo)
+      console.log(weatherForcast)
+      return res.send(weatherForcast)
     })
   })
 })

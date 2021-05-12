@@ -5,28 +5,29 @@ export type DayState = 'sunrise' | 'sunset' | 'night' | 'day'
 export type Location = string
 
 export enum WeatherDescription {
-  Clouds = 'clouds',
-  Clear = 'clear',
-  Mist = 'mist',
-  Smoke = 'smoke',
-  Haze = 'haze',
-  dust = 'dust',
-  Fog = 'fog',
-  Sand = 'sand',
-  Dust = 'dust',
-  Ash = 'ash',
-  Squall = 'squall',
-  Tornado = 'tornado',
-  Snow = 'snow',
-  Rain = 'rain',
-  Drizzel = 'drizzel',
-  Thunderstorm = 'thunderstorm'
+  Clouds = 'Clouds',
+  Clear = 'Clear',
+  Mist = 'Mist',
+  Smoke = 'Smoke',
+  Haze = 'Haze',
+  Dust = 'Dust',
+  Fog = 'Fog',
+  Sand = 'Sand',
+  Ash = 'Ash',
+  Squall = 'Squall',
+  Tornado = 'Tornado',
+  Snow = 'Snow',
+  Rain = 'Rain',
+  Drizzel = 'Drizzel',
+  Thunderstorm = 'Thunderstorm'
 }
 
 export interface WeatherData {
   temp: string,
   sunrise: number,
   sunset: number,
+  humidity: number,
+  windSpeed: number,
   description: WeatherDescription
 }
 
