@@ -24,8 +24,8 @@ export enum WeatherDescription {
 
 export interface WeatherData {
   temp: string,
-  sunrise: number,
-  sunset: number,
+  sunrise: string,
+  sunset: string,
   humidity: number,
   windSpeed: number,
   description: WeatherDescription

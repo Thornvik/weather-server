@@ -1,5 +1,6 @@
 import express, { Request, Response } from 'express'
 import cors from 'cors'
+import { WeatherData } from 'types'
 import { getSunsetSunriseTime } from './utils/sunset-sunrise'
 import { geolocation } from './utils/geolocation'
 import { forcast } from './utils/forecast'
@@ -20,13 +21,13 @@ app.get('/weather', (req: Request, res: Response) => {
     }
 
     const { lat, long, location } = locationData
-    const { currentDayState } = await getSunsetSunriseTime(lat, long)
-    return forcast(lat, long, async (err, weatherData) => {
+    const { currentDayState, sunrise, sunset } = await getSunsetSunriseTime(lat, long)
+    return forcast(lat, long, async (err, data: WeatherData) => {
       if (err !== undefined) {
         return res.send('Unable to get weather forcast, check location')
       }
 
-      const { temp, sunrise, sunset, description } = weatherData
+      const weatherData = { ...data, sunrise, sunset }
 
       const weatherForcast = await {
         location,
