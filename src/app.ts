@@ -12,19 +12,19 @@ const port = process.env.PORT
 app.get('/weather', (req: Request, res: Response) => {
   const { adress } = req.query
   if (!adress) {
-    return res.send('please provide a adress')
+    return res.status(400).send('please provide a adress')
   }
 
   return geolocation(adress as string, async (e, locationData) => {
     if (e !== undefined) {
-      return res.send('Unable to find location')
+      return res.status(400).send('Unable to find location')
     }
 
     const { lat, long, location } = locationData
     const { currentDayState, sunrise, sunset } = await getSunsetSunriseTime(lat, long)
     return forcast(lat, long, async (err, data: WeatherData) => {
       if (err !== undefined) {
-        return res.send('Unable to get weather forcast, check location')
+        return res.status(400).send('Unable to get weather forcast, check location')
       }
 
       const weatherData = { ...data, sunrise, sunset }
