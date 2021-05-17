@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { CallbackVar, WeatherData, WeatherDescription } from 'types'
+import { CallbackVar, WeatherData, WeatherDescription, ComingDaysForcast } from 'types'
 
 export const forcast = (lat: number, long: number, cb: CallbackVar) => {
   const url = `https://api.openweathermap.org/data/2.5/onecall?lat=${
@@ -21,16 +21,29 @@ export const forcast = (lat: number, long: number, cb: CallbackVar) => {
 
       const { temp, humidity, wind_speed } = await res.data.current // eslint-disable-line
       const { main } = await res.data.current.weather[0]
+      const dailyForcast = await res.data.daily
+
+      const comingDaysForcast = [] as ComingDaysForcast[]
+
+      await dailyForcast.forEach((e: any) => {
+        const data = {} as ComingDaysForcast
+        data.date = new Date(e.dt * 1000)
+        data.temp = e.temp.max.toString()
+        data.description = e.weather[0].main as WeatherDescription
+        comingDaysForcast.push(data)
+      })
+
       const weatherData = {
         temp: temp.toString(),
         humidity,
         windSpeed: wind_speed,
-        description: main as WeatherDescription
+        description: main as WeatherDescription,
+        comingDaysForcast
       } as WeatherData
 
       return cb(undefined, weatherData)
     } catch (err) {
-      console.log(lat)
+      console.log(err)
       return cb('error', undefined)
     }
   }

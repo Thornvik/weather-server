@@ -4,6 +4,12 @@ export type DayState = 'sunrise' | 'sunset' | 'night' | 'day'
 
 export type Location = string
 
+export interface ComingDaysForcast {
+  date: Date,
+  temp: string,
+  description: WeatherDescription
+}
+
 export enum WeatherDescription {
   Clouds = 'Clouds',
   Clear = 'Clear',
@@ -29,6 +35,7 @@ export interface WeatherData {
   humidity: number,
   windSpeed: number,
   description: WeatherDescription
+  comingDaysForcast: ComingDaysForcast[]
 }
 
 export interface WeatherInfo {
