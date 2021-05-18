@@ -18,8 +18,7 @@ export const getSunsetSunriseTime = (lat: number, long: number) => {
   const currentMinute = current.getMinutes()
 
   // getting time of sunrise and sunset
-  const sunrise = locationTime.sunrise.getHours() +
-  ':' +
+  const sunrise = locationTime.sunrise.getHours() + ':' +
   (locationTime.sunrise.getMinutes() < 10 ? '0' + locationTime.sunrise.getMinutes() : locationTime.sunrise.getMinutes())
   const sunset = locationTime.sunset.getHours() + ':' +
   (locationTime.sunset.getMinutes() < 10 ? '0' + locationTime.sunset.getMinutes() : locationTime.sunset.getMinutes())
