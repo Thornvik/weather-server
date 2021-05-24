@@ -12,19 +12,19 @@ const port = process.env.PORT
 app.get('/adress', (req: Request, res: Response) => {
   const { adress } = req.query
   if (!adress) {
-    return res.send('Error: please provide a adress')
+    return res.status(400).send('Error: please provide a adress')
   }
 
   return geolocationAdress(adress as string, async (e, locationData) => {
-    if (e !== undefined) {
-      return res.send('Error: Unable to find location')
+    if (e || e !== undefined) {
+      return res.status(404).send('Error: Unable to find location')
     }
 
     const { lat, long, location } = locationData
     const { currentDayState, sunrise, sunset } = await getSunsetSunriseTime(lat, long)
     return forcast(lat, long, async (err, data: WeatherData) => {
-      if (err !== undefined) {
-        return res.send('Error: Unable to get weather forcast, check location')
+      if (err || err !== undefined) {
+        return res.status(404).send('Error: Unable to get weather forcast, check location')
       }
 
       const weatherData = { ...data, sunrise, sunset }
@@ -44,18 +44,18 @@ app.get('/adress', (req: Request, res: Response) => {
 app.get('/coords', (req: Request, res: Response) => {
   const { coords } = req.query
   if (!coords) {
-    res.send('Error: please provide long and lat')
+    res.status(400).send('Error: please provide long and lat')
   }
   geolocationCoords(coords as string, async (e, locationData) => {
-    if (e !== undefined) {
-      return res.send('Error: Unable to find location')
+    if (e || e !== undefined) {
+      return res.status(404).send('Error: Unable to find location')
     }
 
     const { lat, long, location } = locationData
     const { currentDayState, sunrise, sunset } = await getSunsetSunriseTime(lat, long)
     return forcast(lat, long, async (err, data: WeatherData) => {
-      if (err !== undefined) {
-        return res.send('Error: Unable to get weather forcast, check location')
+      if (err || err !== undefined) {
+        return res.status(404).send('Error: Unable to get weather forcast, check location')
       }
 
       const weatherData = { ...data, sunrise, sunset }
