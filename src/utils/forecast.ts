@@ -43,7 +43,6 @@ export const forcast = (lat: number, long: number, cb: CallbackVar) => {
 
       return cb(undefined, weatherData)
     } catch (err) {
-      console.log(err)
       return cb('error', undefined)
     }
   }

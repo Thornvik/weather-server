@@ -9,6 +9,7 @@ const app = express()
 app.use(cors())
 const port = process.env.PORT
 
+// endpoint for getting the weather by an adress
 app.get('/adress', (req: Request, res: Response) => {
   const { adress } = req.query
   if (!adress) {
@@ -35,12 +36,12 @@ app.get('/adress', (req: Request, res: Response) => {
         weatherData
       }
 
-      console.log(weatherForcast)
       return res.send(weatherForcast)
     })
   })
 })
 
+// enpoint for getting the weather by Coordinates
 app.get('/coords', (req: Request, res: Response) => {
   const { coords } = req.query
   if (!coords) {
@@ -66,7 +67,6 @@ app.get('/coords', (req: Request, res: Response) => {
         weatherData
       }
 
-      console.log(weatherForcast)
       return res.send(weatherForcast)
     })
   })
