@@ -3,7 +3,7 @@ import cors from 'cors'
 import { WeatherData } from 'types'
 import { getSunsetSunriseTime } from './utils/sunset-sunrise'
 import { getLocationWithAdress, getLocationWithCoords } from './utils/geolocation'
-import { forcast } from './utils/forecast'
+import { getForcast } from './utils/forecast'
 
 const app = express()
 app.use(cors())
@@ -24,9 +24,9 @@ app.get('/adress', (req: Request, res: Response) => {
     const { lat, long, location } = locationData
     const { currentDayState, sunrise, sunset } = await getSunsetSunriseTime(lat, long)
 
-    forcast(lat, long, async (err, data: WeatherData) => {
+    getForcast(lat, long, async (err, data: WeatherData) => {
       if (err || err !== undefined) {
-        res.status(404).send('Error: Unable to get weather forcast, check location')
+        res.status(404).send(err)
       }
 
       const weatherData = { ...data, sunrise, sunset }
@@ -54,12 +54,12 @@ app.get('/coords', (req: Request, res: Response) => {
       res.status(404).send('Error: Unable to find location')
     }
 
-    const { lat, long, location } = locationData
+    const { lat, long, location } = await locationData
     const { currentDayState, sunrise, sunset } = await getSunsetSunriseTime(lat, long)
 
-    forcast(lat, long, async (err, data: WeatherData) => {
+    getForcast(lat, long, async (err, data: WeatherData) => {
       if (err || err !== undefined) {
-        res.status(404).send('Error: Unable to get weather forcast, check location')
+        res.status(404).send(err)
       }
 
       const weatherData = { ...data, sunrise, sunset }
