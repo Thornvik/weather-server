@@ -34,21 +34,7 @@ export const getLocationWithCoords = (coords: string, cb: CallbackVar) => {
   const lat = coords.split(',')[1]
   const url = `http://api.mapbox.com/geocoding/v5/mapbox.places/${long},${lat}.json?access_token=${process.env.MAPBOX_KEY}&limit=1`
 
-  // const request = async () => {
-  //   try {
-  //     const res = await axios.get(url)
-
-  //     if (res.data.features.length === 0) {
-  //       return cb('Error: unable to find location, try another', undefined)
-  //     }
-
-  //     const location: Location = res.data.features[0].text
-
-  //     return cb(undefined, { lat, long, location })
-  //   } catch (err) {
-  //     return cb(err, undefined)
-  //   }
-  // }
-
   request(url)
+    .then((res) => cb(undefined, res))
+    .catch((error) => cb(error.message, undefined))
 }
