@@ -47,7 +47,6 @@ module.exports = {
     '@typescript-eslint/indent': 'off',
     '@typescript-eslint/lines-between-class-members': 'off',
     '@typescript-eslint/no-tabs': 'off',
-    '@typescript-eslint/no-use-before-define': ['error'],
     'no-shadow': 'off',
     '@typescript-eslint/no-shadow': ['error'],
     'import/extensions': [
