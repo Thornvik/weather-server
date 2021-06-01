@@ -1,26 +1,39 @@
 import suncalc from 'suncalc'
+import { DayState } from 'types'
 
-type dayState = 'sunrise' | 'sunset' | 'night' | 'day'
+interface TimeObject {
+  currentHour: number,
+  dawn: number,
+  goldenHourEnd: number,
+  dusk: number,
+  goldenHour: number
+}
 
-// functions for checking state of day
-const isSunrise = (currentHour: number, sunriseStart: number, sunriseEnd: number) => (currentHour >= sunriseStart && currentHour <= sunriseEnd)
-
-const isSunset = (currentHour: number, sunsetStart: number, sunsetEnd: number) => (currentHour >= sunsetStart && currentHour <= sunsetEnd)
-
-const isNight = (currentHour: number, sunset: number, sunrise: number) => (currentHour > sunset || currentHour < sunrise)
-
-export const getSunsetSunriseTime = (lat: number, long: number) => {
+export const getSunPositionAndDayState = (lat: number, long: number) => {
   const current = new Date()
   const locationTime = suncalc.getTimes(current, lat, long) // getting the time for location based on lat and long
 
-  // current time, hour
-  const currentHour = current.getHours()
+  const { sunrise, sunset } = getSunriseSunsetTimes(locationTime)
+  const currentDayState: DayState = getDayState(locationTime)
 
-  // getting time of sunrise and sunset
+  return {
+    sunrise,
+    sunset,
+    currentDayState
+  }
+}
+
+const getSunriseSunsetTimes = (locationTime: any) => {
   const sunrise = locationTime.sunrise.getHours() + ':' +
   (locationTime.sunrise.getMinutes() < 10 ? '0' + locationTime.sunrise.getMinutes() : locationTime.sunrise.getMinutes())
   const sunset = locationTime.sunset.getHours() + ':' +
   (locationTime.sunset.getMinutes() < 10 ? '0' + locationTime.sunset.getMinutes() : locationTime.sunset.getMinutes())
+  return { sunrise, sunset }
+}
+
+const getDayState = (locationTime: any): DayState => {
+  const current = new Date()
+  const currentHour = current.getHours()
 
   // start of sunrise and end of sunrise
   const dawn = locationTime.dawn.getHours()
@@ -30,15 +43,23 @@ export const getSunsetSunriseTime = (lat: number, long: number) => {
   const dusk = locationTime.dusk.getHours()
   const goldenHour = locationTime.goldenHour.getHours()
 
-  const currentDayState: dayState =
-    isSunrise(currentHour, dawn, goldenHourEnd) ?
-      'sunrise' : (isSunset(currentHour, dusk, goldenHour) ?
-        'sunset' : (isNight(currentHour, goldenHour, dawn) ?
-          'night' : 'day'))
-
-  return {
-    sunrise,
-    sunset,
-    currentDayState
+  const timeObject: TimeObject = {
+    currentHour,
+    dawn,
+    goldenHourEnd,
+    dusk,
+    goldenHour
   }
+
+  if (isSunrise(timeObject)) return 'sunrise'
+  // eslint-disable-next-line no-else-return
+  else if (isSunset(timeObject)) return 'sunset'
+  else if (isNight(timeObject)) return 'night'
+  else return 'day'
 }
+
+const isSunrise = (timeObject: TimeObject) => (timeObject.currentHour >= timeObject.dawn && timeObject.currentHour <= timeObject.goldenHourEnd)
+
+const isSunset = (timeObject: TimeObject) => (timeObject.currentHour >= timeObject.dusk && timeObject.currentHour <= timeObject.goldenHour)
+
+const isNight = (timeObject: TimeObject) => (timeObject.currentHour > timeObject.goldenHour || timeObject.currentHour < timeObject.dawn)

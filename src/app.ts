@@ -1,7 +1,7 @@
 import express, { Request, Response } from 'express'
 import cors from 'cors'
 import { WeatherData } from 'types'
-import { getSunsetSunriseTime } from './utils/sunset-sunrise'
+import { getSunPositionAndDayState } from './utils/sunset-sunrise'
 import { getLocationWithAdress, getLocationWithCoords } from './utils/geolocation'
 import { getForcast } from './utils/forecast'
 
@@ -22,7 +22,7 @@ app.get('/adress', (req: Request, res: Response) => {
     }
 
     const { lat, long, location } = locationData
-    const { currentDayState, sunrise, sunset } = await getSunsetSunriseTime(lat, long)
+    const { currentDayState, sunrise, sunset } = await getSunPositionAndDayState(lat, long)
 
     getForcast(lat, long, async (err, data: WeatherData) => {
       if (err || err !== undefined) {
@@ -55,7 +55,7 @@ app.get('/coords', (req: Request, res: Response) => {
     }
 
     const { lat, long, location } = await locationData
-    const { currentDayState, sunrise, sunset } = await getSunsetSunriseTime(lat, long)
+    const { currentDayState, sunrise, sunset } = await getSunPositionAndDayState(lat, long)
 
     getForcast(lat, long, async (err, data: WeatherData) => {
       if (err || err !== undefined) {
